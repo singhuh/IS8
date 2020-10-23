@@ -1,0 +1,351 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="IS8_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyName" />
+          </Key>
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Interview">
+          <Key>
+            <PropertyRef Name="MNumber" />
+            <PropertyRef Name="InterviewCompany" />
+          </Key>
+          <Property Name="MNumber" Type="nvarchar" MaxLength="9" Nullable="false" />
+          <Property Name="InterviewCompany" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="InterviewDate" Type="date" />
+          <Property Name="Offer" Type="bit" />
+        </EntityType>
+        <EntityType Name="Title">
+          <Key>
+            <PropertyRef Name="TitleName" />
+          </Key>
+          <Property Name="TitleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="MNumber" />
+          </Key>
+          <Property Name="MNumber" Type="nvarchar" MaxLength="9" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="6" />
+          <Property Name="Email" Type="nvarchar" MaxLength="254" Nullable="false" />
+          <Property Name="AdmitYear" Type="smallint" Nullable="false" />
+          <Property Name="GraduationYear" Type="smallint" />
+        </EntityType>
+        <EntityType Name="WorkHistory">
+          <Key>
+            <PropertyRef Name="MNumber" />
+            <PropertyRef Name="CompanyName" />
+            <PropertyRef Name="TitleName" />
+          </Key>
+          <Property Name="MNumber" Type="nvarchar" MaxLength="9" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="TitleName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="FTE" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <Association Name="FK_dbo_Interview_dbo_User_MNumber">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Interview" Type="Self.Interview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="MNumber" />
+            </Principal>
+            <Dependent Role="Interview">
+              <PropertyRef Name="MNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_WorkHistory_dbo_Company_CompanyName">
+          <End Role="Company" Type="Self.Company" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WorkHistory" Type="Self.WorkHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyName" />
+            </Principal>
+            <Dependent Role="WorkHistory">
+              <PropertyRef Name="CompanyName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_WorkHistory_dbo_Title_TitleName">
+          <End Role="Title" Type="Self.Title" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WorkHistory" Type="Self.WorkHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Title">
+              <PropertyRef Name="TitleName" />
+            </Principal>
+            <Dependent Role="WorkHistory">
+              <PropertyRef Name="TitleName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_WorkHistory_dbo_User_MNumber">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WorkHistory" Type="Self.WorkHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="MNumber" />
+            </Principal>
+            <Dependent Role="WorkHistory">
+              <PropertyRef Name="MNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IS8_DBModelStoreContainer">
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Interview" EntityType="Self.Interview" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Title" EntityType="Self.Title" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WorkHistory" EntityType="Self.WorkHistory" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Interview_dbo_User_MNumber" Association="Self.FK_dbo_Interview_dbo_User_MNumber">
+            <End Role="User" EntitySet="User" />
+            <End Role="Interview" EntitySet="Interview" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_WorkHistory_dbo_Company_CompanyName" Association="Self.FK_dbo_WorkHistory_dbo_Company_CompanyName">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="WorkHistory" EntitySet="WorkHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_WorkHistory_dbo_Title_TitleName" Association="Self.FK_dbo_WorkHistory_dbo_Title_TitleName">
+            <End Role="Title" EntitySet="Title" />
+            <End Role="WorkHistory" EntitySet="WorkHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_WorkHistory_dbo_User_MNumber" Association="Self.FK_dbo_WorkHistory_dbo_User_MNumber">
+            <End Role="User" EntitySet="User" />
+            <End Role="WorkHistory" EntitySet="WorkHistory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="IS8_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyName" />
+          </Key>
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="WorkHistories" Relationship="Self.FK_dbo_WorkHistory_dbo_Company_CompanyName" FromRole="Company" ToRole="WorkHistory" />
+        </EntityType>
+        <EntityType Name="Interview">
+          <Key>
+            <PropertyRef Name="MNumber" />
+            <PropertyRef Name="InterviewCompany" />
+          </Key>
+          <Property Name="MNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="InterviewCompany" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="InterviewDate" Type="DateTime" Precision="0" />
+          <Property Name="Offer" Type="Boolean" />
+          <NavigationProperty Name="User" Relationship="Self.FK_dbo_Interview_dbo_User_MNumber" FromRole="Interview" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Title">
+          <Key>
+            <PropertyRef Name="TitleName" />
+          </Key>
+          <Property Name="TitleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="WorkHistories" Relationship="Self.FK_dbo_WorkHistory_dbo_Title_TitleName" FromRole="Title" ToRole="WorkHistory" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="MNumber" />
+          </Key>
+          <Property Name="MNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="6" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="254" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AdmitYear" Type="Int16" Nullable="false" />
+          <Property Name="GraduationYear" Type="Int16" />
+          <NavigationProperty Name="Interviews" Relationship="Self.FK_dbo_Interview_dbo_User_MNumber" FromRole="User" ToRole="Interview" />
+          <NavigationProperty Name="WorkHistories" Relationship="Self.FK_dbo_WorkHistory_dbo_User_MNumber" FromRole="User" ToRole="WorkHistory" />
+        </EntityType>
+        <EntityType Name="WorkHistory">
+          <Key>
+            <PropertyRef Name="MNumber" />
+            <PropertyRef Name="CompanyName" />
+            <PropertyRef Name="TitleName" />
+          </Key>
+          <Property Name="MNumber" Type="String" MaxLength="9" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TitleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="FTE" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_dbo_WorkHistory_dbo_Company_CompanyName" FromRole="WorkHistory" ToRole="Company" />
+          <NavigationProperty Name="Title" Relationship="Self.FK_dbo_WorkHistory_dbo_Title_TitleName" FromRole="WorkHistory" ToRole="Title" />
+          <NavigationProperty Name="User" Relationship="Self.FK_dbo_WorkHistory_dbo_User_MNumber" FromRole="WorkHistory" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_dbo_WorkHistory_dbo_Company_CompanyName">
+          <End Role="Company" Type="Self.Company" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WorkHistory" Type="Self.WorkHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyName" />
+            </Principal>
+            <Dependent Role="WorkHistory">
+              <PropertyRef Name="CompanyName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Interview_dbo_User_MNumber">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Interview" Type="Self.Interview" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="MNumber" />
+            </Principal>
+            <Dependent Role="Interview">
+              <PropertyRef Name="MNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_WorkHistory_dbo_Title_TitleName">
+          <End Role="Title" Type="Self.Title" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WorkHistory" Type="Self.WorkHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Title">
+              <PropertyRef Name="TitleName" />
+            </Principal>
+            <Dependent Role="WorkHistory">
+              <PropertyRef Name="TitleName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_WorkHistory_dbo_User_MNumber">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="WorkHistory" Type="Self.WorkHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="MNumber" />
+            </Principal>
+            <Dependent Role="WorkHistory">
+              <PropertyRef Name="MNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="IS8_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="Interviews" EntityType="Self.Interview" />
+          <EntitySet Name="Titles" EntityType="Self.Title" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="WorkHistories" EntityType="Self.WorkHistory" />
+          <AssociationSet Name="FK_dbo_WorkHistory_dbo_Company_CompanyName" Association="Self.FK_dbo_WorkHistory_dbo_Company_CompanyName">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="WorkHistory" EntitySet="WorkHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Interview_dbo_User_MNumber" Association="Self.FK_dbo_Interview_dbo_User_MNumber">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Interview" EntitySet="Interviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_WorkHistory_dbo_Title_TitleName" Association="Self.FK_dbo_WorkHistory_dbo_Title_TitleName">
+            <End Role="Title" EntitySet="Titles" />
+            <End Role="WorkHistory" EntitySet="WorkHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_WorkHistory_dbo_User_MNumber" Association="Self.FK_dbo_WorkHistory_dbo_User_MNumber">
+            <End Role="User" EntitySet="Users" />
+            <End Role="WorkHistory" EntitySet="WorkHistories" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="IS8_DBModelStoreContainer" CdmEntityContainer="IS8_DBEntities">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="IS8_DBModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Interviews">
+            <EntityTypeMapping TypeName="IS8_DBModel.Interview">
+              <MappingFragment StoreEntitySet="Interview">
+                <ScalarProperty Name="MNumber" ColumnName="MNumber" />
+                <ScalarProperty Name="InterviewCompany" ColumnName="InterviewCompany" />
+                <ScalarProperty Name="InterviewDate" ColumnName="InterviewDate" />
+                <ScalarProperty Name="Offer" ColumnName="Offer" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Titles">
+            <EntityTypeMapping TypeName="IS8_DBModel.Title">
+              <MappingFragment StoreEntitySet="Title">
+                <ScalarProperty Name="TitleName" ColumnName="TitleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="IS8_DBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="MNumber" ColumnName="MNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AdmitYear" ColumnName="AdmitYear" />
+                <ScalarProperty Name="GraduationYear" ColumnName="GraduationYear" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkHistories">
+            <EntityTypeMapping TypeName="IS8_DBModel.WorkHistory">
+              <MappingFragment StoreEntitySet="WorkHistory">
+                <ScalarProperty Name="MNumber" ColumnName="MNumber" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="TitleName" ColumnName="TitleName" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="FTE" ColumnName="FTE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

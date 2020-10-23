@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>University of Cincinnati</h1>
+    <h2>Carl H. Lindner College of Business</h2><h3>MSIS Program</h3>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Students</h2>
+        <p>
+            List and details of students
+        </p>
+        <p>@Html.ActionLink("More...", "Index", "Users", null, new { @class = "btn btn-danger" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Work Histories</h2>
+        <p>Details on work history of current students and alumni.</p>
+        <p>@Html.ActionLink("More...", "Index", "WorkHistories", null, new { @class = "btn btn-danger" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Interviews</h2>
+        <p>Details on job interviews of current students.</p>
+        <p>@Html.ActionLink("More...", "Index", "Interviews", null, new { @class = "btn btn-danger" })</p>
+    </div>
+</div>
